@@ -27,6 +27,7 @@ javascript: (function() {
                     console.log('reader.onload', this);
                     if(element.src) element.src = e.target.result;
                     if(element.srcset) element.srcset = e.target.result;
+                    if(element['data-srcset']) element['data-srcset'] = e.target.result;
                 };
                 reader.readAsDataURL(file);
             }
@@ -41,6 +42,7 @@ javascript: (function() {
             var element = elements[i];
 
             if (element) {
+                element.style = 'z-index: 10;';
                 element.addEventListener('dragover', onDragOver.bind(element, element));
                 element.addEventListener('dragleave', onDragLeave.bind(element, element));
                 element.addEventListener('drop', onDrop.bind(element, element));
@@ -54,6 +56,13 @@ javascript: (function() {
 
     addDragoverEvent('img', document.getElementsByTagName);
 
-    document.body.contentEditable = 'true';
-    document.designMode = 'on';
+    if (window.isActive) {
+        document.body.contentEditable = 'false';
+        document.designMode = 'off';
+        window.isActive = false;
+    } else {
+        document.body.contentEditable = 'true';
+        document.designMode = 'on';
+        window.isActive = true;
+    }
 })();
